@@ -1,7 +1,15 @@
 import { TurboModuleRegistry, type TurboModule } from 'react-native';
 
+export type ContactPhone = {
+  name: string;
+  phoneNumber: string;
+};
+
 export interface Spec extends TurboModule {
-  multiply(a: number, b: number): number;
+  pickContactPhone(): Promise<ContactPhone | null>;
 }
 
-export default TurboModuleRegistry.getEnforcing<Spec>('ContactPicker');
+// Resolve lazily so importing a shared barrel does not require a native binary.
+export function getNativeContactPicker(): Spec {
+  return TurboModuleRegistry.getEnforcing<Spec>('ContactPicker');
+}

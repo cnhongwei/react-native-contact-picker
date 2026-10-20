@@ -1,6 +1,6 @@
 {
-  "name": "react-native-contact-picker",
-  "version": "0.1.0",
+  "name": "@cnhongwei/react-native-contact-picker",
+  "version": "0.1.1",
   "description": "Permission-free native contact phone picker for React Native New Architecture",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
@@ -29,14 +29,17 @@
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__",
-    "!**/.*"
+    "!**/.*",
+    "!android/src/test"
   ],
   "scripts": {
     "example": "yarn workspace react-native-contact-picker-example",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
     "typecheck": "tsc",
-    "lint": "eslint \"**/*.{js,ts,tsx}\""
+    "lint": "eslint \"**/*.{js,ts,tsx}\" --max-warnings=0",
+    "test:android": "cd example/android && ./gradlew :cnhongwei_react-native-contact-picker:testDebugUnitTest",
+    "test": "node --test tests/api.test.cjs"
   },
   "keywords": [
     "react-native",
@@ -54,6 +57,7 @@
   },
   "homepage": "https://github.com/cnhongwei/react-native-contact-picker#readme",
   "publishConfig": {
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
@@ -76,8 +80,8 @@
     "typescript": "^6.0.3"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*"
+    "react": ">=19.3.0",
+    "react-native": ">=0.88.0"
   },
   "workspaces": [
     "example"
@@ -107,6 +111,11 @@
     "jsSrcsDir": "src",
     "android": {
       "javaPackageName": "com.contactpicker"
+    },
+    "ios": {
+      "modulesProvider": {
+        "ContactPicker": "ContactPicker"
+      }
     }
   },
   "prettier": {

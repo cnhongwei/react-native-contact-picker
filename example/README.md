@@ -1,97 +1,62 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Contact Picker example
 
-# Getting Started
+This app uses the library source in the parent workspace. Tap **Choose contact phone** to select a name and one phone number. The result appears below the button; cancellation preserves the previous selection and errors appear as status text.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Setup and run
 
-## Step 1: Start Metro
-
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
-
-To start the Metro dev server, run the following command from the root of your React Native project:
+Run these commands from the repository root. Use the Node version in `.nvmrc`, the pinned Yarn 4.11.0, JDK 17 and an installed Android SDK. iOS requires macOS, Xcode and CocoaPods through Bundler.
 
 ```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
+yarn install --immutable
+cd example
 bundle install
+bundle exec pod install --project-directory=ios
+cd ..
+yarn example start
 ```
 
-Then, and every time you update your native dependencies, run:
+Keep Metro running. In another terminal, with a simulator or emulator already booted:
 
 ```sh
-bundle exec pod install
+# Android
+yarn example android
+
+# iOS
+yarn example ios
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+When multiple devices are running, use `yarn example android --help` or `yarn example ios --help` to select the intended device. Android emulators can reach Metro through `adb -s <serial> reverse tcp:8081 tcp:8081`.
+
+JavaScript changes reload through Metro; native changes require a rebuild. If the library package name changes and Gradle still reports the old module name, remove the generated `example/android/build/generated/autolinking` directory and rebuild to refresh the autolinking cache.
+
+## Sample contacts
+
+[fixtures/test-contacts.vcf](fixtures/test-contacts.vcf) contains six fictional test contacts: Chinese names, English names, single and multiple phone numbers, international and local number formats, and a contact with only an email address. Import once per simulator to avoid duplicates. Existing contacts do not need to be removed.
+
+On an iOS simulator, use its UUID from `xcrun simctl list devices booted`:
 
 ```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+xcrun simctl addmedia <device-uuid> example/fixtures/test-contacts.vcf
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+On Android, copy the file to the emulator, then use the Contacts app's import-from-file option (the menu varies by provider):
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```sh
+adb -s <serial> push example/fixtures/test-contacts.vcf /sdcard/Download/test-contacts.vcf
+```
 
-## Step 3: Modify your app
+The import happens outside the example app. Do not add contacts permissions to the example to seed data.
 
-Now that you have successfully run the app, let's make changes!
+## Manual test checklist
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+- Select a contact with one number and confirm the displayed name and number.
+- Select **Alice Test** or **张三（测试）** and choose each of their numbers separately.
+- Confirm number formatting is preserved, including country codes and spaces.
+- Check that a contact without a phone number cannot produce a selection (disabled on iOS or excluded by the Android phone picker).
+- Cancel with the picker button, Android Back or iOS swipe dismissal; the previous selection should remain.
+- Try repeated taps and background/foreground transitions while the picker is open.
+- Confirm no address-book permission is requested. Development networking permissions are separate from contacts access.
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+Run on physical devices and different Android contact providers before release; simulator checks alone do not cover those environments.
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+For automated checks and native build commands, see the [root README](../README.md#development-and-validation).

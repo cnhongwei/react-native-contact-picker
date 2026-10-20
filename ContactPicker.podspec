@@ -14,6 +14,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/cnhongwei/react-native-contact-picker.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift,cpp}"
+  s.frameworks = "Contacts", "ContactsUI"
   s.private_header_files = "ios/**/*.h"
 
   install_modules_dependencies(s)
