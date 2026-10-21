@@ -29,7 +29,7 @@ Errors include `E_PICKER_BUSY`, `E_NO_ACTIVITY` / `E_NO_VIEW_CONTROLLER`, `E_UNA
 
 ## Installation and compatibility
 
-After publication, install with `npm install @cnhongwei/react-native-contact-picker`. For local testing, install the packed library into your app, install iOS pods, then rebuild the native application. Expo development builds/prebuild are supported through React Native autolinking; Expo Go and an OTA-only installation are not supported. New Architecture is required. The generated example targets React Native 0.88.0, Android API 24+ (the host may require a higher minimum), and React Native's current iOS deployment target. Earlier React Native versions have not been verified.
+Install with `npm install @cnhongwei/react-native-contact-picker`. For local testing, install the packed library into your app, install iOS pods, then rebuild the native application. Expo development builds/prebuild are supported through React Native autolinking; Expo Go and an OTA-only installation are not supported. New Architecture is required. The generated example targets React Native 0.88.0, Android API 24+ (the host may require a higher minimum), and React Native's current iOS deployment target. Earlier React Native versions have not been verified.
 
 ```sh
 corepack yarn install
@@ -59,7 +59,7 @@ xcodebuild -workspace ContactPickerExample.xcworkspace -scheme ContactPickerExam
   CODE_SIGNING_ALLOWED=NO build
 ```
 
-See [the example guide](example/README.md) for simulator setup, sample contacts and manual test cases.
+See [the example guide](https://github.com/cnhongwei/react-native-contact-picker/blob/main/example/README.md) for simulator setup, sample contacts and manual test cases.
 
 JavaScript tests cover lazy native-module loading, selection, cancellation and error propagation. Android Robolectric tests cover the URI scope/projection, missing data, cancellation, repeated calls, invalid results and lifecycle cleanup. The example demonstrates selection, cancellation and error handling without logging contact data.
 
